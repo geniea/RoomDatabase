@@ -1,0 +1,150 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "23c51a5fc17ccdd303e71a0b2a73c40c",
+    "entities": [
+      {
+        "tableName": "person_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`personId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `gender` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "personId",
+            "columnName": "personId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstName",
+            "columnName": "first_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastName",
+            "columnName": "last_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gender",
+            "columnName": "gender",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "personId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "marriage_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`marriageId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `marriage_date` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "marriageId",
+            "columnName": "marriageId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "marriageDate",
+            "columnName": "marriage_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "marriageId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "marriage_person_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`marriagePersonID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `marriage_id` INTEGER NOT NULL, `person_id` INTEGER NOT NULL, FOREIGN KEY(`marriage_id`) REFERENCES `marriage_table`(`marriageId`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`person_id`) REFERENCES `person_table`(`personId`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "marriagePersonID",
+            "columnName": "marriagePersonID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "marriageId",
+            "columnName": "marriage_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "personId",
+            "columnName": "person_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "marriagePersonID"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_marriage_person_table_marriage_id",
+            "unique": false,
+            "columnNames": [
+              "marriage_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_marriage_person_table_marriage_id` ON `${TABLE_NAME}` (`marriage_id`)"
+          },
+          {
+            "name": "index_marriage_person_table_person_id",
+            "unique": false,
+            "columnNames": [
+              "person_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_marriage_person_table_person_id` ON `${TABLE_NAME}` (`person_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "marriage_table",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "marriage_id"
+            ],
+            "referencedColumns": [
+              "marriageId"
+            ]
+          },
+          {
+            "table": "person_table",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "person_id"
+            ],
+            "referencedColumns": [
+              "personId"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '23c51a5fc17ccdd303e71a0b2a73c40c')"
+    ]
+  }
+}
